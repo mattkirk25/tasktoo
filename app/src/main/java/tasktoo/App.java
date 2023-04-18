@@ -6,6 +6,9 @@ import javax.xml.bind.JAXBContext;
 import javax.xml.bind.JAXBException;
 import javax.xml.bind.Unmarshaller;
 import java.io.File;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Scanner;
 
 public class App {
     public static void main(String[] args) {
@@ -15,13 +18,43 @@ public class App {
             Unmarshaller jaxbUnmarshaller = jaxbContext.createUnmarshaller();
             Records records = (Records) jaxbUnmarshaller.unmarshal(file);
 
+            Scanner scanner = new Scanner(System.in);
+            System.out.println("Please select the fields you would like to see for each record, your options are: Name, Postal Zip, Region, Country, Address, List");
+            String input = scanner.nextLine();
+            String[] fields = input.split(",");
+
+            List<String> selectedFields = new ArrayList<>();
+            for (String field : fields) {
+                selectedFields.add(field.trim().toLowerCase());
+            }
+
             for (Record record : records.getRecords()) {
-                System.out.println("Name: " + record.getName());
-                System.out.println("Postal Zip: " + record.getPostalZip());
-                System.out.println("Region: " + record.getRegion());
-                System.out.println("Country: " + record.getCountry());
-                System.out.println("Address: " + record.getAddress());
-                System.out.println("List: " + record.getList());
+                StringBuilder stringBuilder = new StringBuilder();
+                for (String selectedField : selectedFields) {
+                    switch (selectedField) {
+                        case "name":
+                            stringBuilder.append("Name: ").append(record.getName()).append(", ");
+                            break;
+                        case "postal zip":
+                            stringBuilder.append("Postal Zip: ").append(record.getPostalZip()).append(", ");
+                            break;
+                        case "region":
+                            stringBuilder.append("Region: ").append(record.getRegion()).append(", ");
+                            break;
+                        case "country":
+                            stringBuilder.append("Country: ").append(record.getCountry()).append(", ");
+                            break;
+                        case "address":
+                            stringBuilder.append("Address: ").append(record.getAddress()).append(", ");
+                            break;
+                        case "list":
+                            stringBuilder.append("List: ").append(record.getList()).append(", ");
+                            break;
+                    }
+                }
+                if (stringBuilder.length() > 2) {
+                    System.out.println(stringBuilder.substring(0, stringBuilder.length() - 2));
+                }
             }
         } catch (JAXBException e) {
             e.printStackTrace();
