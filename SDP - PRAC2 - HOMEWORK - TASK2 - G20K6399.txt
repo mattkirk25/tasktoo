@@ -1,0 +1,523 @@
+1.
+
+please create a java application using gradle that will read in a file called 'data.xml' and print out the field values.
+this is the structure of the 'data.xml' file:
+<?xml version="1.0" encoding="UTF-8" ?>
+<records>
+	<record>
+		<name>Xena Bradford</name>
+		<postalZip>17716</postalZip>
+		<region>Bahia</region>
+		<country>Brazil</country>
+		<address>Ap #593-1566 Lectus Ave</address>
+		<list>61, 1, 41, 37, 13</list>
+	</record>
+</records>
+
+
+2.
+
+Excellent, Now I would the program to request input from the user:
+It must show the available options such as:
+"Please select the fields you would like to see for each record, your options are: Name, Postal Zip, Region, Country, Address, List"
+Consider: This input must not be case sensitive.
+It must then use all the entered values to display the correlating field
+
+3.
+
+This solution builds  however, when i use './gradlew run' i get the following error:
+> Task :app:run FAILED
+Please select the fields you would like to see for each record, your options are: Name, Postal Zip, Region, Country, Address, List
+Exception in thread "main" java.util.NoSuchElementException: No line found
+        at java.base/java.util.Scanner.nextLine(Scanner.java:1656)
+        at tasktoo.App.main(App.java:23)
+How do I correct this issue?
+
+Could we possibly use this?
+run {
+    standardInput = System.in
+}
+
+4.
+
+Fantastic, please can you now modify it to output the final stringBuilder as a .json file and formatted correctly instead of using "System.out.println()" to display it
+
+
+5.
+
+Unfortunately when running this command after making the changes: './gradlew build'
+
+I received these errors:
+> Task :app:compileJava FAILED
+D:\tasktoo\app\src\main\java\tasktoo\App.java:15: error: package com.google.gson does not exist
+import com.google.gson.Gson;
+                      ^
+D:\tasktoo\app\src\main\java\tasktoo\App.java:16: error: package com.google.gson does not exist
+import com.google.gson.GsonBuilder;
+                      ^
+D:\tasktoo\app\src\main\java\tasktoo\App.java:66: error: cannot find symbol
+            Gson gson = new GsonBuilder().setPrettyPrinting().create();
+            ^
+  symbol:   class Gson
+  location: class App
+D:\tasktoo\app\src\main\java\tasktoo\App.java:66: error: cannot find symbol
+            Gson gson = new GsonBuilder().setPrettyPrinting().create();
+                            ^
+  symbol:   class GsonBuilder
+  location: class App
+4 errors
+
+FAILURE: Build failed with an exception.
+
+* What went wrong:
+Execution failed for task ':app:compileJava'.
+> Compilation failed; see the compiler error output for details.
+
+How can we rectify this issue?
+
+
+6.
+
+Thank you, Please can we now edit the Main.java method to also handle errors such as if the user were to input an invalid field or something that is not expected at all
+
+7.
+
+Unfortunately when running this command after making the changes: './gradlew build'
+
+I received these errors:
+> Task :app:compileJava FAILED
+D:\tasktoo\app\src\main\java\tasktoo\App.java:21: error: cannot find symbol
+        Set<String> fieldSet = new HashSet<>(Arrays.asList(fields));
+        ^
+  symbol:   class Set
+  location: class App
+D:\tasktoo\app\src\main\java\tasktoo\App.java:21: error: cannot find symbol
+        Set<String> fieldSet = new HashSet<>(Arrays.asList(fields));
+                                   ^
+  symbol:   class HashSet
+  location: class App
+D:\tasktoo\app\src\main\java\tasktoo\App.java:21: error: cannot find symbol
+        Set<String> fieldSet = new HashSet<>(Arrays.asList(fields));
+                                             ^
+  symbol:   variable Arrays
+  location: class App
+D:\tasktoo\app\src\main\java\tasktoo\App.java:40: error: cannot find symbol
+        List<Record> records = parseXmlFile(filePath);
+                               ^
+  symbol:   method parseXmlFile(String)
+  location: class App
+4 errors
+
+FAILURE: Build failed with an exception.
+
+* What went wrong:
+Execution failed for task ':app:compileJava'.
+> Compilation failed; see the compiler error output for details.
+
+How can we rectify this issue?
+
+8.
+
+After executing the './gradlew build' command, I receive the following errors:
+> Task :app:compileJava FAILED
+D:\tasktoo\app\src\main\java\tasktoo\App.java:28: error: cannot find symbol
+            DocumentBuilderFactory dbf = DocumentBuilderFactory.newInstance();
+            ^
+  symbol:   class DocumentBuilderFactory
+  location: class App
+D:\tasktoo\app\src\main\java\tasktoo\App.java:28: error: cannot find symbol
+            DocumentBuilderFactory dbf = DocumentBuilderFactory.newInstance();
+                                         ^
+  symbol:   variable DocumentBuilderFactory
+  location: class App
+D:\tasktoo\app\src\main\java\tasktoo\App.java:29: error: cannot find symbol
+            DocumentBuilder db = dbf.newDocumentBuilder();
+            ^
+  symbol:   class DocumentBuilder
+  location: class App
+D:\tasktoo\app\src\main\java\tasktoo\App.java:30: error: cannot find symbol
+            Document doc = db.parse(file);
+            ^
+  symbol:   class Document
+  location: class App
+D:\tasktoo\app\src\main\java\tasktoo\App.java:32: error: cannot find symbol
+            NodeList nodeList = doc.getElementsByTagName("record");
+            ^
+  symbol:   class NodeList
+  location: class App
+D:\tasktoo\app\src\main\java\tasktoo\App.java:35: error: cannot find symbol
+                Node node = nodeList.item(i);
+                ^
+  symbol:   class Node
+  location: class App
+D:\tasktoo\app\src\main\java\tasktoo\App.java:37: error: cannot find symbol
+                if (node.getNodeType() == Node.ELEMENT_NODE) {
+                                          ^
+  symbol:   variable Node
+  location: class App
+D:\tasktoo\app\src\main\java\tasktoo\App.java:38: error: cannot find symbol
+                    Element element = (Element) node;
+                    ^
+  symbol:   class Element
+  location: class App
+D:\tasktoo\app\src\main\java\tasktoo\App.java:38: error: cannot find symbol
+                    Element element = (Element) node;
+                                       ^
+  symbol:   class Element
+  location: class App
+9 errors
+
+FAILURE: Build failed with an exception.
+
+* What went wrong:
+Execution failed for task ':app:compileJava'.
+> Compilation failed; see the compiler error output for details.
+
+How can we rectify them?
+
+9.
+
+After adding the mentioned imports and executing with './gradlew build' 
+The build process occurred without error. 
+However after executing './gradlew run'
+I have the following errors:
+PS D:\tasktoo> ./gradlew run --stacktrace
+
+> Task :app:run
+Please select the fields you would like to see for each record, your options are: Name, Postal Zip, Region, Country, Address, List
+<<==<=========----> 75% EXECUTING [5s]
+java.io.FileNotFoundException: D:\tasktoo\app\data.xml (The system cannot find the file specified)
+        at java.base/java.io.FileInputStream.open0(Native Method)
+        at java.base/java.io.FileInputStream.open(FileInputStream.java:219)
+        at java.base/java.io.FileInputStream.<init>(FileInputStream.java:158)
+        at java.base/java.io.FileInputStream.<init>(FileInputStream.java:112)
+        at java.base/sun.net.www.protocol.file.FileURLConnection.connect(FileURLConnection.java:86)
+        at java.base/sun.net.www.protocol.file.FileURLConnection.getInputStream(FileURLConnection.java:189)
+        at java.xml/com.sun.org.apache.xerces.internal.impl.XMLEntityManager.setupCurrentEntity(XMLEntityManager.java:653)
+        at java.xml/com.sun.org.apache.xerces.internal.impl.XMLVersionDetector.determineDocVersion(XMLVersionDetector.java:150)
+        at java.xml/com.sun.org.apache.xerces.internal.parsers.XML11Configuration.parse(XML11Configuration.java:861)
+        at java.xml/com.sun.org.apache.xerces.internal.parsers.XML11Configuration.parse(XML11Configuration.java:825)
+        at java.xml/com.sun.org.apache.xerces.internal.parsers.XMLParser.parse(XMLParser.java:141)
+        at java.xml/com.sun.org.apache.xerces.internal.parsers.DOMParser.parse(DOMParser.java:247)
+        at java.xml/com.sun.org.apache.xerces.internal.jaxp.DocumentBuilderImpl.parse(DocumentBuilderImpl.java:342)
+        at java.xml/javax.xml.parsers.DocumentBuilder.parse(DocumentBuilder.java:206)
+        at tasktoo.App.parseXmlFile(App.java:37)
+        at tasktoo.App.main(App.java:86)
+Exception in thread "main" com.google.gson.JsonSyntaxException: com.google.gson.stream.MalformedJsonException: Unexpected value at line 3 column 4 path $.records
+        at com.google.gson.Gson.fromJson(Gson.java:978)
+        at com.google.gson.Gson.fromJson(Gson.java:928)
+        at com.google.gson.Gson.fromJson(Gson.java:877)
+        at com.google.gson.Gson.fromJson(Gson.java:848)
+        at tasktoo.App.main(App.java:123)
+Caused by: com.google.gson.stream.MalformedJsonException: Unexpected value at line 3 column 4 path $.records
+        at com.google.gson.stream.JsonReader.syntaxError(JsonReader.java:1562)
+        at com.google.gson.stream.JsonReader.doPeek(JsonReader.java:563)
+        at com.google.gson.stream.JsonReader.peek(JsonReader.java:424)
+        at com.google.gson.internal.bind.ObjectTypeAdapter.read(ObjectTypeAdapter.java:74)
+        at com.google.gson.internal.bind.ObjectTypeAdapter.read(ObjectTypeAdapter.java:89)
+        at com.google.gson.Gson.fromJson(Gson.java:963)
+        ... 4 more
+
+> Task :app:run FAILED
+
+FAILURE: Build failed with an exception.
+
+* What went wrong:
+Execution failed for task ':app:run'.
+> Process 'command 'C:\Program Files\Java\jdk-19\bin\java.exe'' finished with non-zero exit value 1
+
+How can we rectify this?
+
+
+10.
+
+I have now given it the absolute file path and i recieve the following error:
+[Fatal Error] :1:1: Content is not allowed in prolog.
+org.xml.sax.SAXParseException; systemId: file:/D:/tasktoo/app/src/main/resources/; lineNumber: 1; columnNumber: 1; Content is not allowed in prolog.
+        at java.xml/com.sun.org.apache.xerces.internal.parsers.DOMParser.parse(DOMParser.java:262)
+        at java.xml/com.sun.org.apache.xerces.internal.jaxp.DocumentBuilderImpl.parse(DocumentBuilderImpl.java:342)
+        at java.xml/javax.xml.parsers.DocumentBuilder.parse(DocumentBuilder.java:206)
+        at tasktoo.App.parseXmlFile(App.java:37)
+        at tasktoo.App.main(App.java:86)
+Exception in thread "main" com.google.gson.JsonSyntaxException: com.google.gson.stream.MalformedJsonException: Unexpected value at line 3 column 4 path $.records
+        at com.google.gson.Gson.fromJson(Gson.java:978)
+        at com.google.gson.Gson.fromJson(Gson.java:928)
+        at com.google.gson.Gson.fromJson(Gson.java:877)
+        at com.google.gson.Gson.fromJson(Gson.java:848)
+        at tasktoo.App.main(App.java:123)
+Caused by: com.google.gson.stream.MalformedJsonException: Unexpected value at line 3 column 4 path $.records
+        at com.google.gson.stream.JsonReader.syntaxError(JsonReader.java:1562)
+        at com.google.gson.stream.JsonReader.doPeek(JsonReader.java:563)
+        at com.google.gson.stream.JsonReader.peek(JsonReader.java:424)
+        at com.google.gson.internal.bind.ObjectTypeAdapter.read(ObjectTypeAdapter.java:74)
+        at com.google.gson.internal.bind.ObjectTypeAdapter.read(ObjectTypeAdapter.java:89)
+        at com.google.gson.Gson.fromJson(Gson.java:963)
+        ... 4 more
+
+> Task :app:run FAILED
+
+FAILURE: Build failed with an exception.
+
+* What went wrong:
+Execution failed for task ':app:run'.
+> Process 'command 'C:\Program Files\Java\jdk-19\bin\java.exe'' finished with non-zero exit value 1
+
+Would it be beneficial to use an alternative XML parser?
+
+11.
+
+Here is my entire App.java file:
+/*
+ * This Java source file was generated by the Gradle 'init' task.
+ */
+package tasktoo;
+import org.w3c.dom.Document;
+import org.w3c.dom.Element;
+import org.w3c.dom.Node;
+import org.w3c.dom.NodeList;
+import javax.xml.parsers.DocumentBuilder;
+import javax.xml.parsers.DocumentBuilderFactory;
+
+import java.util.Set;
+import java.util.HashSet;
+import java.util.Arrays;
+import java.util.List;
+import javax.xml.bind.JAXBContext;
+import javax.xml.bind.JAXBException;
+import javax.xml.bind.Unmarshaller;
+import java.io.File;
+import java.io.FileWriter;
+import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Scanner;
+
+import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
+
+public class App {
+    private static List<Record> parseXmlFile(String filePath) {
+        List<Record> records = new ArrayList<>();
+    
+        try {
+            File file = new File(filePath);
+            DocumentBuilderFactory dbf = DocumentBuilderFactory.newInstance();
+            DocumentBuilder db = dbf.newDocumentBuilder();
+            Document doc = db.parse(file);
+    
+            NodeList nodeList = doc.getElementsByTagName("record");
+    
+            for (int i = 0; i < nodeList.getLength(); i++) {
+                Node node = nodeList.item(i);
+    
+                if (node.getNodeType() == Node.ELEMENT_NODE) {
+                    Element element = (Element) node;
+    
+                    Record record = new Record();
+                    record.setName(element.getElementsByTagName("name").item(0).getTextContent());
+                    record.setPostalZip(element.getElementsByTagName("postalZip").item(0).getTextContent());
+                    record.setRegion(element.getElementsByTagName("region").item(0).getTextContent());
+                    record.setCountry(element.getElementsByTagName("country").item(0).getTextContent());
+                    record.setAddress(element.getElementsByTagName("address").item(0).getTextContent());
+                    record.setList(element.getElementsByTagName("list").item(0).getTextContent());
+    
+                    records.add(record);
+                }
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    
+        return records;
+    }
+    
+    public static void main(String[] args) {
+        String[] fields = { "Name", "Postal Zip", "Region", "Country", "Address", "List" };
+        Set<String> fieldSet = new HashSet<>(Arrays.asList(fields));
+    
+        Scanner scanner = new Scanner(System.in);
+        System.out.println("Please select the fields you would like to see for each record, your options are: " + String.join(", ", fields));
+    
+        String userInput = scanner.nextLine();
+        String[] selectedFields = userInput.split(",");
+    
+        List<String> validFields = new ArrayList<>();
+        for (String field : selectedFields) {
+            String trimmedField = field.trim();
+            if (!trimmedField.isEmpty() && fieldSet.contains(trimmedField)) {
+                validFields.add(trimmedField);
+            } else {
+                System.out.println("Invalid field: " + trimmedField);
+            }
+        }
+    
+        String filePath = "D:\\tasktoo\\app\\src\\main\\resources";
+        List<Record> records = parseXmlFile(filePath);
+        StringBuilder output = new StringBuilder();
+        output.append("{\n  \"records\": [\n");
+        for (Record record : records) {
+            output.append("    {\n");
+            for (String field : validFields) {
+                switch (field) {
+                    case "Name":
+                        output.append("      \"Name\": \"" + record.getName() + "\",\n");
+                        break;
+                    case "Postal Zip":
+                        output.append("      \"Postal Zip\": \"" + record.getPostalZip() + "\",\n");
+                        break;
+                    case "Region":
+                        output.append("      \"Region\": \"" + record.getRegion() + "\",\n");
+                        break;
+                    case "Country":
+                        output.append("      \"Country\": \"" + record.getCountry() + "\",\n");
+                        break;
+                    case "Address":
+                        output.append("      \"Address\": \"" + record.getAddress() + "\",\n");
+                        break;
+                    case "List":
+                        output.append("      \"List\": \"" + record.getList() + "\",\n");
+                        break;
+                    default:
+                        // should not reach here
+                        break;
+                }
+            }
+            output.deleteCharAt(output.length() - 2); // remove trailing comma
+            output.append("    },\n");
+        }
+        output.deleteCharAt(output.length() - 2); // remove trailing comma
+        output.append("  ]\n}");
+    
+        Gson gson = new GsonBuilder().setPrettyPrinting().create();
+        String jsonOutput = gson.toJson(gson.fromJson(output.toString(), Object.class));
+        System.out.println(jsonOutput);
+    
+        try {
+            String outputFilePath = "output.json";
+            FileWriter fileWriter = new FileWriter(outputFilePath);
+            gson.toJson(gson.fromJson(output.toString(), Object.class), fileWriter);
+            fileWriter.close();
+            System.out.println("Output written to " + outputFilePath);
+        } catch (IOException e) {
+            System.out.println("Error writing output to file: " + e.getMessage());
+        }
+    }
+    
+}
+Please edit it to use the SAX parser because there is nothing wrong with the 'data.xml' file
+
+12.
+
+Please continue the 'main' method
+
+13.
+
+I would like you to alter the 'main' method to display all fields in the 'data.xml' file if none of the user provided fields are Valid fields.
+
+14.
+
+After successfully executing './gradlew build', I executed './gradlew run' and recieved these errors:
+> Task :app:run
+Please select the fields you would like to see for each record, your options are: Name, Postal Zip, Region, Country, Address, List
+<=========----> 75% EXECUTING [3s]
+Invalid field:
+None of the selected fields are valid. Displaying all fields...
+java.io.FileNotFoundException: D:\tasktoo\app\data.xml (The system cannot find the file specified)
+        at java.base/java.io.FileInputStream.open0(Native Method)
+        at java.base/java.io.FileInputStream.open(FileInputStream.java:219)
+        at java.base/java.io.FileInputStream.<init>(FileInputStream.java:158)
+        at java.base/java.io.FileInputStream.<init>(FileInputStream.java:112)
+        at java.base/sun.net.www.protocol.file.FileURLConnection.connect(FileURLConnection.java:86)
+        at java.base/sun.net.www.protocol.file.FileURLConnection.getInputStream(FileURLConnection.java:189)
+        at java.xml/com.sun.org.apache.xerces.internal.impl.XMLEntityManager.setupCurrentEntity(XMLEntityManager.java:653)
+        at java.xml/com.sun.org.apache.xerces.internal.impl.XMLVersionDetector.determineDocVersion(XMLVersionDetector.java:150)
+        at java.xml/com.sun.org.apache.xerces.internal.parsers.XML11Configuration.parse(XML11Configuration.java:861)
+        at java.xml/com.sun.org.apache.xerces.internal.parsers.XML11Configuration.parse(XML11Configuration.java:825)
+        at java.xml/com.sun.org.apache.xerces.internal.parsers.XMLParser.parse(XMLParser.java:141)
+        at java.xml/com.sun.org.apache.xerces.internal.parsers.AbstractSAXParser.parse(AbstractSAXParser.java:1224)
+        at java.xml/com.sun.org.apache.xerces.internal.jaxp.SAXParserImpl$JAXPSAXParser.parse(SAXParserImpl.java:637)
+        at java.xml/com.sun.org.apache.xerces.internal.jaxp.SAXParserImpl.parse(SAXParserImpl.java:326)
+        at java.xml/javax.xml.parsers.SAXParser.parse(SAXParser.java:330)
+        at tasktoo.App.parseXmlFile(App.java:73)
+        at tasktoo.App.main(App.java:108)
+Exception in thread "main" com.google.gson.JsonSyntaxException: com.google.gson.stream.MalformedJsonException: Unexpected value at line 3 column 4 path $.records
+        at com.google.gson.Gson.fromJson(Gson.java:978)
+        at com.google.gson.Gson.fromJson(Gson.java:928)
+        at com.google.gson.Gson.fromJson(Gson.java:877)
+        at com.google.gson.Gson.fromJson(Gson.java:848)
+        at tasktoo.App.main(App.java:145)
+Caused by: com.google.gson.stream.MalformedJsonException: Unexpected value at line 3 column 4 path $.records
+        at com.google.gson.stream.JsonReader.syntaxError(JsonReader.java:1562)
+        at com.google.gson.stream.JsonReader.doPeek(JsonReader.java:563)
+        at com.google.gson.stream.JsonReader.peek(JsonReader.java:424)
+        at com.google.gson.internal.bind.ObjectTypeAdapter.read(ObjectTypeAdapter.java:74)
+        at com.google.gson.internal.bind.ObjectTypeAdapter.read(ObjectTypeAdapter.java:89)
+        at com.google.gson.Gson.fromJson(Gson.java:963)
+        ... 4 more
+
+> Task :app:run FAILED
+
+FAILURE: Build failed with an exception.
+
+* What went wrong:
+Execution failed for task ':app:run'.
+> Process 'command 'C:\Program Files\Java\jdk-19\bin\java.exe'' finished with non-zero exit value 1
+
+Would updating the absolute path here:
+"        String filePath = "data.xml";
+"
+Help with this error?
+
+15.
+
+The application is now building and running, however, after being prompted for input and entering 'Name, Country, Address', I receive the following error:
+> Task :app:run
+Please select the fields you would like to see for each record, your options are: Name, Postal Zip, Region, Country, Address, List
+<==<==<======<=<<====<<=========----> 75% EXECUTING [12s]
+org.xml.sax.SAXParseException; systemId: file:/D:/tasktoo/app/src/main/resources/; lineNumber: 1; columnNumber: 1; Content is not allowed in prolog.
+        at java.xml/com.sun.org.apache.xerces.internal.util.ErrorHandlerWrapper.createSAXParseException(ErrorHandlerWrapper.java:204)
+        at java.xml/com.sun.org.apache.xerces.internal.util.ErrorHandlerWrapper.fatalError(ErrorHandlerWrapper.java:178)
+        at java.xml/com.sun.org.apache.xerces.internal.impl.XMLErrorReporter.reportError(XMLErrorReporter.java:400)
+        at java.xml/com.sun.org.apache.xerces.internal.impl.XMLErrorReporter.reportError(XMLErrorReporter.java:327)
+        at java.xml/com.sun.org.apache.xerces.internal.impl.XMLScanner.reportFatalError(XMLScanner.java:1465)
+        at java.xml/com.sun.org.apache.xerces.internal.impl.XMLDocumentScannerImpl$PrologDriver.next(XMLDocumentScannerImpl.java:978)
+        at java.xml/com.sun.org.apache.xerces.internal.impl.XMLDocumentScannerImpl.next(XMLDocumentScannerImpl.java:605)
+        at java.xml/com.sun.org.apache.xerces.internal.impl.XMLDocumentFragmentScannerImpl.scanDocument(XMLDocumentFragmentScannerImpl.java:542)
+        at java.xml/com.sun.org.apache.xerces.internal.parsers.XML11Configuration.parse(XML11Configuration.java:889)
+        at java.xml/com.sun.org.apache.xerces.internal.parsers.XML11Configuration.parse(XML11Configuration.java:825)
+        at java.xml/com.sun.org.apache.xerces.internal.parsers.XMLParser.parse(XMLParser.java:141)
+        at java.xml/com.sun.org.apache.xerces.internal.parsers.AbstractSAXParser.parse(AbstractSAXParser.java:1224)
+        at java.xml/com.sun.org.apache.xerces.internal.jaxp.SAXParserImpl$JAXPSAXParser.parse(SAXParserImpl.java:637)
+        at java.xml/com.sun.org.apache.xerces.internal.jaxp.SAXParserImpl.parse(SAXParserImpl.java:326)
+        at java.xml/javax.xml.parsers.SAXParser.parse(SAXParser.java:330)
+        at tasktoo.App.parseXmlFile(App.java:73)
+        at tasktoo.App.main(App.java:108)
+Exception in thread "main" com.google.gson.JsonSyntaxException: com.google.gson.stream.MalformedJsonException: Unexpected value at line 3 column 4 path $.records
+        at com.google.gson.Gson.fromJson(Gson.java:978)
+        at com.google.gson.Gson.fromJson(Gson.java:928)
+        at com.google.gson.Gson.fromJson(Gson.java:877)
+        at com.google.gson.Gson.fromJson(Gson.java:848)
+        at tasktoo.App.main(App.java:145)
+Caused by: com.google.gson.stream.MalformedJsonException: Unexpected value at line 3 column 4 path $.records
+        at com.google.gson.stream.JsonReader.syntaxError(JsonReader.java:1562)
+        at com.google.gson.stream.JsonReader.doPeek(JsonReader.java:563)
+        at com.google.gson.stream.JsonReader.peek(JsonReader.java:424)
+        at com.google.gson.internal.bind.ObjectTypeAdapter.read(ObjectTypeAdapter.java:74)
+        at com.google.gson.internal.bind.ObjectTypeAdapter.read(ObjectTypeAdapter.java:89)
+        at com.google.gson.Gson.fromJson(Gson.java:963)
+        ... 4 more
+
+> Task :app:run FAILED
+
+FAILURE: Build failed with an exception.
+
+* What went wrong:
+Execution failed for task ':app:run'.
+> Process 'command 'C:\Program Files\Java\jdk-19\bin\java.exe'' finished with non-zero exit value 1
+
+How can we rectify this considering that the 'data.xml' file is 100% correct
+
+
+16.
+
+It would appear that the actual issue was that I failed to enter the correct absolute path. Many thanks for all of your assistance.
