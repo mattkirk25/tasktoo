@@ -82,7 +82,7 @@ public class App {
             }
         }
     
-        String filePath = "data.xml";
+        String filePath = "D:\\tasktoo\\app\\src\\main\\resources";
         List<Record> records = parseXmlFile(filePath);
         StringBuilder output = new StringBuilder();
         output.append("{\n  \"records\": [\n");
