@@ -82,13 +82,13 @@ public class App {
     public static void main(String[] args) {
         String[] fields = { "Name", "Postal Zip", "Region", "Country", "Address", "List" };
         Set<String> fieldSet = new HashSet<>(Arrays.asList(fields));
-
+    
         Scanner scanner = new Scanner(System.in);
         System.out.println("Please select the fields you would like to see for each record, your options are: " + String.join(", ", fields));
-
+    
         String userInput = scanner.nextLine();
         String[] selectedFields = userInput.split(",");
-
+    
         List<String> validFields = new ArrayList<>();
         for (String field : selectedFields) {
             String trimmedField = field.trim();
@@ -98,7 +98,7 @@ public class App {
                 System.out.println("Invalid field: " + trimmedField);
             }
         }
-
+    
         String filePath = "D:\\tasktoo\\app\\src\\main\\resources\\data.xml";
         List<Record> records = parseXmlFile(filePath);
         StringBuilder output = new StringBuilder();
@@ -106,3 +106,48 @@ public class App {
         for (Record record : records) {
             output.append("    {\n");
             for (String field : validFields) {
+                switch (field) {
+                    case "Name":
+                        output.append("      \"Name\": \"" + record.getName() + "\",\n");
+                        break;
+                    case "Postal Zip":
+                        output.append("      \"Postal Zip\": \"" + record.getPostalZip() + "\",\n");
+                        break;
+                    case "Region":
+                        output.append("      \"Region\": \"" + record.getRegion() + "\",\n");
+                        break;
+                    case "Country":
+                        output.append("      \"Country\": \"" + record.getCountry() + "\",\n");
+                        break;
+                    case "Address":
+                        output.append("      \"Address\": \"" + record.getAddress() + "\",\n");
+                        break;
+                    case "List":
+                        output.append("      \"List\": \"" + record.getList() + "\",\n");
+                        break;
+                    default:
+                        // should not reach here
+                        break;
+                }
+            }
+            output.deleteCharAt(output.length() - 2); // remove trailing comma
+            output.append("    },\n");
+        }
+        output.deleteCharAt(output.length() - 2); // remove trailing comma
+        output.append("  ]\n}");
+    
+        Gson gson = new GsonBuilder().setPrettyPrinting().create();
+        String jsonOutput = gson.toJson(gson.fromJson(output.toString(), Object.class));
+        System.out.println(jsonOutput);
+    
+        try {
+            String outputFilePath = "output.json";
+            FileWriter fileWriter = new FileWriter(outputFilePath);
+            gson.toJson(gson.fromJson(output.toString(), Object.class), fileWriter);
+            fileWriter.close();
+            System.out.println("Output written to " + outputFilePath);
+        } catch (IOException e) {
+            System.out.println("Error writing output to file: " + e.getMessage());
+        }
+    }
+}    
