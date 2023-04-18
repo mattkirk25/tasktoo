@@ -17,63 +17,75 @@ import com.google.gson.GsonBuilder;
 
 public class App {
     public static void main(String[] args) {
+        String[] fields = { "Name", "Postal Zip", "Region", "Country", "Address", "List" };
+        Set<String> fieldSet = new HashSet<>(Arrays.asList(fields));
+    
+        Scanner scanner = new Scanner(System.in);
+        System.out.println("Please select the fields you would like to see for each record, your options are: " + String.join(", ", fields));
+    
+        String userInput = scanner.nextLine();
+        String[] selectedFields = userInput.split(",");
+    
+        List<String> validFields = new ArrayList<>();
+        for (String field : selectedFields) {
+            String trimmedField = field.trim();
+            if (!trimmedField.isEmpty() && fieldSet.contains(trimmedField)) {
+                validFields.add(trimmedField);
+            } else {
+                System.out.println("Invalid field: " + trimmedField);
+            }
+        }
+    
+        String filePath = "data.xml";
+        List<Record> records = parseXmlFile(filePath);
+        StringBuilder output = new StringBuilder();
+        output.append("{\n  \"records\": [\n");
+        for (Record record : records) {
+            output.append("    {\n");
+            for (String field : validFields) {
+                switch (field) {
+                    case "Name":
+                        output.append("      \"Name\": \"" + record.getName() + "\",\n");
+                        break;
+                    case "Postal Zip":
+                        output.append("      \"Postal Zip\": \"" + record.getPostalZip() + "\",\n");
+                        break;
+                    case "Region":
+                        output.append("      \"Region\": \"" + record.getRegion() + "\",\n");
+                        break;
+                    case "Country":
+                        output.append("      \"Country\": \"" + record.getCountry() + "\",\n");
+                        break;
+                    case "Address":
+                        output.append("      \"Address\": \"" + record.getAddress() + "\",\n");
+                        break;
+                    case "List":
+                        output.append("      \"List\": \"" + record.getList() + "\",\n");
+                        break;
+                    default:
+                        // should not reach here
+                        break;
+                }
+            }
+            output.deleteCharAt(output.length() - 2); // remove trailing comma
+            output.append("    },\n");
+        }
+        output.deleteCharAt(output.length() - 2); // remove trailing comma
+        output.append("  ]\n}");
+    
+        Gson gson = new GsonBuilder().setPrettyPrinting().create();
+        String jsonOutput = gson.toJson(gson.fromJson(output.toString(), Object.class));
+        System.out.println(jsonOutput);
+    
         try {
-            File file = new File("src/main/resources/data.xml");
-            JAXBContext jaxbContext = JAXBContext.newInstance(Records.class);
-            Unmarshaller jaxbUnmarshaller = jaxbContext.createUnmarshaller();
-            Records records = (Records) jaxbUnmarshaller.unmarshal(file);
-
-            Scanner scanner = new Scanner(System.in);
-            System.out.println("Please select the fields you would like to see for each record, your options are: Name, Postal Zip, Region, Country, Address, List");
-            String input = scanner.nextLine();
-            String[] fields = input.split(",");
-
-            List<String> selectedFields = new ArrayList<>();
-            for (String field : fields) {
-                selectedFields.add(field.trim().toLowerCase());
-            }
-
-            List<String> outputList = new ArrayList<>();
-            for (Record record : records.getRecords()) {
-                StringBuilder stringBuilder = new StringBuilder();
-                for (String selectedField : selectedFields) {
-                    switch (selectedField) {
-                        case "name":
-                            stringBuilder.append("\"name\": \"").append(record.getName()).append("\", ");
-                            break;
-                        case "postal zip":
-                            stringBuilder.append("\"postalZip\": \"").append(record.getPostalZip()).append("\", ");
-                            break;
-                        case "region":
-                            stringBuilder.append("\"region\": \"").append(record.getRegion()).append("\", ");
-                            break;
-                        case "country":
-                            stringBuilder.append("\"country\": \"").append(record.getCountry()).append("\", ");
-                            break;
-                        case "address":
-                            stringBuilder.append("\"address\": \"").append(record.getAddress()).append("\", ");
-                            break;
-                        case "list":
-                            stringBuilder.append("\"list\": \"").append(record.getList()).append("\", ");
-                            break;
-                    }
-                }
-                if (stringBuilder.length() > 2) {
-                    outputList.add("{ " + stringBuilder.substring(0, stringBuilder.length() - 2) + " }");
-                }
-            }
-
-            Gson gson = new GsonBuilder().setPrettyPrinting().create();
-            String outputJson = gson.toJson(outputList);
-
-            try (FileWriter writer = new FileWriter("output.json")) {
-                writer.write(outputJson);
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
-
-        } catch (JAXBException e) {
-            e.printStackTrace();
+            String outputFilePath = "output.json";
+            FileWriter fileWriter = new FileWriter(outputFilePath);
+            gson.toJson(gson.fromJson(output.toString(), Object.class), fileWriter);
+            fileWriter.close();
+            System.out.println("Output written to " + outputFilePath);
+        } catch (IOException e) {
+            System.out.println("Error writing output to file: " + e.getMessage());
         }
     }
+    
 }
