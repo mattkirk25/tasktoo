@@ -99,7 +99,12 @@ public class App {
             }
         }
     
-        String filePath = "D:\\tasktoo\\app\\src\\main\\resources\\data.xml";
+        if (validFields.isEmpty()) {
+            System.out.println("None of the selected fields are valid. Displaying all fields...");
+            validFields.addAll(fieldSet);
+        }
+    
+        String filePath = "data.xml";
         List<Record> records = parseXmlFile(filePath);
         StringBuilder output = new StringBuilder();
         output.append("{\n  \"records\": [\n");
@@ -149,5 +154,5 @@ public class App {
         } catch (IOException e) {
             System.out.println("Error writing output to file: " + e.getMessage());
         }
-    }
+    }    
 }    
